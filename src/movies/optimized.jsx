@@ -1,5 +1,5 @@
 // OptimizedMovieApp.js
-import React, { memo, useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 const calculateMovieScore = (rating, reviews) => {
   console.log("🔄 Calculating movie score...");
@@ -8,14 +8,14 @@ const calculateMovieScore = (rating, reviews) => {
 };
 
 // Memoized Movie component
-const Movie = memo(({ title, rating, onLike }) => {
+const Movie = React.memo(({ title, rating, onLike, movieId }) => {
   console.log("🎬 Rendering Movie:", title);
 
   return (
     <div style={{ border: "1px solid gray", padding: "10px", margin: "10px" }}>
       <h3>{title}</h3>
       <p>Rating: {rating}⭐</p>
-      <button onClick={onLike}>Like 👍</button>
+      <button onClick={() => onLike(movieId)}>Like 👍</button>
     </div>
   );
 });
@@ -49,9 +49,10 @@ const OptimizedMovieApp = () => {
       {movies.map((movie) => (
         <Movie
           key={movie.id}
+          movieId={movie.id}
           title={movie.title}
           rating={movie.rating}
-          onLike={() => handleLike(movie.id)}
+          onLike={handleLike}
         />
       ))}
     </div>
